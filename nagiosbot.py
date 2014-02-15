@@ -12,10 +12,15 @@ class NagiosBot(JabberBot):
         """Send notify"""
         pynotify.init("Basic")
         print args
-        val=args.split('-#-',1)
-        print val[0]
-        print val[1]
-        n = pynotify.Notification(val[0],val[1])
+        exec args
+        print atype
+        if atype == "host":
+            title='Host ' + host + ' is ' + state
+
+        if atype == "service":
+            title == 'Service ' + servdesc + ' in state ' + state
+
+        n = pynotify.Notification(title,output)
         n.show()
 
     def who(self, mess, args):
