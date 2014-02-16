@@ -1,0 +1,20 @@
+=nagiosdbot.py=
+
+Configure nagios
+
+# 'host-notify-by-jabber' command
+define command {
+    command_name    host-notify-by-jabber
+    command_line    /usr/local/sbin/nagiosdbot.py $CONTACTEMAIL$ "notify atype='host'-#-host='$HOSTALIAS$'-#-state='$HOSTSTATE$'-#-output='$HOSTOUTPUT$'"
+}
+
+# 'service-notify-by-jabber' command
+define command {
+    command_name    service-notify-by-jabber
+    command_line    /usr/local/sbin/nagiosdbot.py $CONTACTEMAIL$ "notify atype='service'-#-notification='$NOTIFICATIONTYPE$'-#-host='$HOSTNAME$'-#-servdesc='$SERVICEDESC$'-#-state='$SERVICESTATE$'-#-output='$SERVICEOUTPUT$'-#-date='$LONGDATETIME$'"
+}
+
+
+
+=nagiosbot.py=
+execute client and fun
