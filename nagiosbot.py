@@ -11,11 +11,9 @@ class NagiosBot(JabberBot):
     def notify(self, mess, args):
         """Send notify"""
         pynotify.init("image")
-        print args
         params=args.split('-#-')
         for arg in params:
             exec arg
-            varsplit=arg.split('=')
 
         if atype == "host":
             title='Host ' + host + ' is ' + state
