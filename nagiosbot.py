@@ -12,15 +12,27 @@ class NagiosBot(JabberBot):
         """Send notify"""
         pynotify.init("image")
         print args
-        exec args
-        print atype
+        params=args.split('-#-')
+        for arg in params:
+            exec arg
+            varsplit=arg.split('=')
+
         if atype == "host":
             title='Host ' + host + ' is ' + state
 
         if atype == "service":
-            title == 'Service ' + servdesc + ' in state ' + state
+            title='Service ' + servdesc + ' in state ' + state
 
-        n = pynotify.Notification(title,output,os.getcwd() + '/img/critical.png')
+        if state == 'OK':
+            img = 'greendot.gif'
+        elif state == 'WARNING':
+            img = 'warning.png'
+        elif state == 'CRITICAL':
+            img = 'critical.png'
+        else:
+            img = 'notify.gif'
+
+        n = pynotify.Notification(title,output,os.getcwd() + '/img/' + img)
         n.show()
 
 
