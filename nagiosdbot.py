@@ -4,20 +4,18 @@ import xmpp, sys, os
 from jabberbot import JabberBot, botcmd
 from ConfigParser import RawConfigParser
 
-pipe = '/tmp/nagios.fifo'
-
 class NagiosdBot(JabberBot):
     @botcmd
     def notify(self, mess, args):
         print 'hola'+args
         """Send notify"""
-
        
 def nagbot(bot):
   checkpid(os.getpid(),'/tmp/nagiosdbot.server.pid')
   bot.serve_forever()
 
 def fifo(bot):
+  pipe = '/tmp/nagios.fifo'
   checkpid(os.getpid(),'/tmp/nagiosdbot.fifo.pid')
   if not os.path.exists(pipe):
     os.mkfifo(pipe)
@@ -58,14 +56,13 @@ if __name__ == "__main__":
   config = RawConfigParser()
   config.read(['/etc/nagiosdbot.cfg','nagiosdbot.cfg'])
 
-
   pid = os.fork()
   if pid == 0:
-    botfifo = NagiosdBot(config.get('nagiosdbot','username'),config.get('nagiosdbot','password'))
+    botfifo = NagiosdBot(config.get('nagiosdbot','username'),config.get('nagiosdbot','password'),'fifo')
     fifo(botfifo)
     sys.exit(0)
   pid = os.fork()
   if pid == 0:
-    bot = NagiosdBot(config.get('nagiosdbot','username'),config.get('nagiosdbot','password'))
+    bot = NagiosdBot(config.get('nagiosdbot','username'),config.get('nagiosdbot','password'),'bot')
     nagbot(bot)
     sys.exit(0)
